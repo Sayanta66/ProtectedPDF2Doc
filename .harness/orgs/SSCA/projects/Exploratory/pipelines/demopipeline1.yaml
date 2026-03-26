@@ -44,7 +44,7 @@ pipeline:
                       curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh
                       mv ./bin/syft /usr/local/bin/
                       syft version
-                      syft dir:. -o json > sbom.json
+                      syft dir:. -o cyclonedx-json > sbom.json
               - step:
                   type: SscaOrchestration
                   name: SBOM Orchestration_1
