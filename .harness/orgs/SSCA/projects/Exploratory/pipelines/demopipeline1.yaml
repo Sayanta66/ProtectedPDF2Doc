@@ -41,6 +41,16 @@ pipeline:
                   spec:
                     shell: Sh
                     command: |-
+                      # Install syft
+                      curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh
+
+                      # Move binary to PATH
+                      mv ./bin/syft /usr/local/bin/
+
+                      # Verify
+                      syft version
+
+                      # Generate SBOM
                       syft dir:. -o json > sbom.json
                       cp /path/to/sbom.json ./sbom.json
               - step:
