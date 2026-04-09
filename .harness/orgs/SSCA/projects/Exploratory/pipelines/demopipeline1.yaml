@@ -44,7 +44,14 @@ pipeline:
                       curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh
                       mv ./bin/syft /usr/local/bin/
                       syft version
+
+                      # THIS LINE WAS MISSING
+                      mkdir -p /harness/output
+
                       syft dir:. -o spdx-json > /harness/output/sbom.json
+
+                      # Always verify
+                      ls -R /harness/output
               - step:
                   type: SscaOrchestration
                   name: SBOM Orchestration_1
