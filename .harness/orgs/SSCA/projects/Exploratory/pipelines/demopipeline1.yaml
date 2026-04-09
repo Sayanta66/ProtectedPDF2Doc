@@ -69,25 +69,3 @@ pipeline:
                       limits:
                         memory: 500Mi
                         cpu: "0.5"
-              - step:
-                  type: SscaOrchestration
-                  name: SBOM Orchestration_2
-                  identifier: SBOMOrchestration_2
-                  spec:
-                    mode: ingestion
-                    ingestion:
-                      file: sbom.json
-                    source:
-                      type: repository
-                      spec:
-                        url: https://github.com/Sayanta66/ProtectedPDF2Doc.git
-                        variant_type: branch
-                        variant: main
-                    sbom_drift:
-                      base: repository
-                      spec:
-                        variant: main
-                    resources:
-                      limits:
-                        memory: 500Mi
-                        cpu: "0.5"
