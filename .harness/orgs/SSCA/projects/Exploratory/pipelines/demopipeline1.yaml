@@ -1,0 +1,64 @@
+pipeline:
+  name: demo-pipeline1
+  identifier: demopipeline1
+  projectIdentifier: Exploratory
+  orgIdentifier: SSCA
+  tags: {}
+  properties:
+    ci:
+      codebase:
+        connectorRef: Sayanta66
+        repoName: ProtectedPDF2Doc.git
+        build: <+input>
+  stages:
+    - stage:
+        name: demo-build
+        identifier: demobuild
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: false
+          buildIntelligence:
+            enabled: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec:
+              size: small
+              imageSpec:
+                imageName: ubuntu-latest
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Run_1
+                  identifier: Run_1
+                  spec:
+                    shell: Sh
+                    command: |-
+                      curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh
+                      mv ./bin/syft /usr/local/bin/
+                      syft version
+                      syft dir:. -o cyclonedx-json > sbom.json
+              - step:
+                  type: SscaOrchestration
+                  name: SBOM Orchestration_1
+                  identifier: SBOMOrchestration_1
+                  spec:
+                    mode: ingestion
+                    ingestion:
+                      file: sbom.json
+                    source:
+                      type: local
+                      spec:
+                        artifact_name: sbom-local
+                        version: "1.0"
+                    resources:
+                      limits:
+                        memory: 500Mi
+                        cpu: "0.5"
